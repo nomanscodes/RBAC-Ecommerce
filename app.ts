@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import sequelize from "./config/db";
 import userRouter from "./routes/users";
 import authRouter from "./routes/auth";
-import "./models/user"; // Import models to register them
+import "./models/index"; // Import all models and associations
 import testRouter from "./routes/test";
 import { authMiddleware } from "./middleware/authMiddleware";
 

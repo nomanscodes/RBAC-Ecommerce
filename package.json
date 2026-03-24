@@ -5,7 +5,8 @@
   "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.ts"
+    "start": "nodemon app.ts",
+    "seed:roles": "ts-node seeders/seedRolesPermissions.ts"
   },
   "keywords": [],
   "author": "",
