@@ -2,11 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import sequelize from "./config/db";
-import userRouter from "./routes/users";
-import authRouter from "./routes/auth";
-import "./models/index"; // Import all models and associations
-import testRouter from "./routes/test";
-import { authMiddleware } from "./middleware/authMiddleware";
+import "./models/index";
+import apiRouter from "./routes";
 
 dotenv.config();
 const app = express();
@@ -16,22 +13,42 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json());
 app.use(cors());
 
-// routes
-app.use("/api/auth", authRouter);
-// app.use("/api/users", userRouter);
-app.use("/api/test", authMiddleware, testRouter);
+// API Routes - All routes prefixed with /api
+app.use("/api", apiRouter);
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.json({
+    message: "E-commerce API Server",
+    status: "running",
+    endpoints: {
+      api: "/api",
+      health: "/api/health",
+      docs: "/api",
+    },
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+    path: req.path,
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-// Test DB connection and sync models
+// Test DB connection
 sequelize
   .authenticate()
   .then(() => {
     console.log("Database connected...");
-    // Sync all models with database (creates tables if they don't exist)
-    return sequelize.sync({ alter: true });
+    // Only sync if tables don't exist, don't alter existing tables
+    return sequelize.sync({ alter: false });
   })
   .then(() => {
     console.log("Database synchronized");

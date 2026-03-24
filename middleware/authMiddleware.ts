@@ -18,10 +18,8 @@ export const authMiddleware = (
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
 
-    console.log("Decoded JWT payload:", decoded); // Debugging log
-
     // Attach user info to request object
-    // req.user = decoded as { id: number; role: string };
+    req.user = decoded as { id: number; role: string; permissions?: any[] };
 
     next();
   } catch (err) {

@@ -136,10 +136,10 @@ export const registration = async (
     console.log("Registration data:", { name, email, role });
 
     // Validate required fields
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password) {
       res.status(400).json({
         success: false,
-        message: "Name, email, password, and role are required",
+        message: "Name, email, and password are required",
       });
       return;
     }
@@ -172,7 +172,7 @@ export const registration = async (
       name,
       email,
       password: hashedPassword,
-      role,
+      role: role || "customer", // Default to 'customer' role if not provided
     });
 
     res.status(201).json({
