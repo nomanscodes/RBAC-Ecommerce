@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { checkPermission } from "../middleware/permissionMiddleware";
 import { MODULES, ACTIONS } from "../types/constants";
+import { createProduct } from "../controllers/productsController";
 // import * as productController from "../controllers/productController";
 
 const router = Router();
@@ -44,10 +45,7 @@ router.post(
   "/",
   authMiddleware,
   checkPermission(MODULES.PRODUCTS, ACTIONS.CREATE),
-  (req: Request, res: Response) => {
-    res.json({ message: "Create product", user: req.user });
-    // productController.createProduct(req, res);
-  },
+  createProduct,
 );
 
 /**
