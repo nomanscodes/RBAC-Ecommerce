@@ -17,7 +17,6 @@ class User
   public email!: string;
   public password!: string;
   public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
 
 User.init(
@@ -60,6 +59,8 @@ User.init(
     tableName: "users",
     modelName: "User",
     timestamps: true,
+    updatedAt: false,
+    underscored: true,
   },
 );
 

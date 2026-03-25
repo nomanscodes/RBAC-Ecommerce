@@ -47,3 +47,60 @@ export const PATTERNS = {
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{6,}$/,
 } as const;
+
+// Permission actions
+export const ACTIONS = {
+  CREATE: "create",
+  READ: "read",
+  UPDATE: "update",
+  DELETE: "delete",
+} as const;
+
+// Resource modules
+export const MODULES = {
+  USERS: "users",
+  PRODUCTS: "products",
+  ORDERS: "orders",
+  CATEGORIES: "categories",
+  SETTINGS: "settings",
+  REPORTS: "reports",
+} as const;
+
+// Full permission slugs for convenience
+export const PERMISSIONS = {
+  // User permissions
+  USERS_CREATE: "users-create",
+  USERS_READ: "users-read",
+  USERS_UPDATE: "users-update",
+  USERS_DELETE: "users-delete",
+
+  // Product permissions
+  PRODUCTS_CREATE: "products-create",
+  PRODUCTS_READ: "products-read",
+  PRODUCTS_UPDATE: "products-update",
+  PRODUCTS_DELETE: "products-delete",
+
+  // Order permissions
+  ORDERS_CREATE: "orders-create",
+  ORDERS_READ: "orders-read",
+  ORDERS_UPDATE: "orders-update",
+  ORDERS_DELETE: "orders-delete",
+
+  // Category permissions
+  CATEGORIES_CREATE: "categories-create",
+  CATEGORIES_READ: "categories-read",
+  CATEGORIES_UPDATE: "categories-update",
+  CATEGORIES_DELETE: "categories-delete",
+
+  // Settings permissions
+  SETTINGS_READ: "settings-read",
+  SETTINGS_UPDATE: "settings-update",
+
+  // Reports permissions
+  REPORTS_READ: "reports-read",
+} as const;
+
+// Type helpers
+export type PermissionAction = (typeof ACTIONS)[keyof typeof ACTIONS];
+export type PermissionModule = (typeof MODULES)[keyof typeof MODULES];
+export type PermissionSlug = (typeof PERMISSIONS)[keyof typeof PERMISSIONS];

@@ -3,6 +3,7 @@ import User from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { LoginDTO, JWTPayload, ApiResponse } from "../types/user";
+import { getRolesAndPermissions } from "../utils/getRolesPermissions";
 
 interface LoginResponse {
   token: string;
@@ -10,6 +11,11 @@ interface LoginResponse {
     id: number;
     name: string;
     email: string;
+    role: string;
+    permissions: Array<{
+      module: string;
+      actions: string[];
+    }>;
   };
 }
 
@@ -70,10 +76,14 @@ export const login = async (
       return;
     }
 
-    // Create JWT payload
+    // Get roles and permissions
+    const rolePermissions = await getRolesAndPermissions(user.role);
+
+    // Create JWT payload with permissions
     const payload: JWTPayload = {
       id: user.id,
       role: user.role,
+      permissions: rolePermissions.permissions,
     };
 
     // Generate token
@@ -81,7 +91,7 @@ export const login = async (
       expiresIn: "24h",
     });
 
-    // Send response without password
+    // Send response without password but with roles and permissions
     res.status(200).json({
       success: true,
       message: "Login successful",
@@ -91,6 +101,8 @@ export const login = async (
           id: user.id,
           name: user.name,
           email: user.email,
+          role: user.role,
+          permissions: rolePermissions.permissions,
         },
       },
     });
@@ -124,10 +136,10 @@ export const registration = async (
     console.log("Registration data:", { name, email, role });
 
     // Validate required fields
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password) {
       res.status(400).json({
         success: false,
-        message: "Name, email, password, and role are required",
+        message: "Name, email, and password are required",
       });
       return;
     }
@@ -160,7 +172,7 @@ export const registration = async (
       name,
       email,
       password: hashedPassword,
-      role,
+      role: role || "customer", // Default to 'customer' role if not provided
     });
 
     res.status(201).json({

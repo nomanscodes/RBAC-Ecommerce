@@ -17,7 +17,6 @@ export interface UserAttributes {
   email: string;
   password: string;
   createdAt?: Date;
-  updatedAt?: Date;
 }
 
 // Optional fields for creation
@@ -37,7 +36,6 @@ export interface UserResponseDTO {
   name: string;
   email: string;
   createdAt?: Date;
-  updatedAt?: Date;
 }
 
 // DTO for user creation request
@@ -58,6 +56,10 @@ export interface LoginDTO {
 export interface JWTPayload {
   id: number;
   role: string;
+  permissions?: Array<{
+    module: string;
+    actions: string[];
+  }>;
   iat?: number;
   exp?: number;
 }
