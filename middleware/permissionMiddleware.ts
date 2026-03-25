@@ -27,13 +27,14 @@ export const checkPermission = (moduleOrSlug: string, action?: string) => {
       let module: string;
       let permAction: string;
 
+      // Mode 2: checkPermission('users', 'create')
       if (action) {
-        // Mode 2: checkPermission('users', 'create')
         module = moduleOrSlug;
         permAction = action;
-      } else {
+
         // Mode 1: checkPermission('users-create')
         // Parse slug format: 'module-action'
+      } else {
         const parts = moduleOrSlug.split("-");
         if (parts.length < 2) {
           return res.status(500).json({
