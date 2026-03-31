@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
 import sequelize from "./config/db";
 import "./models/index";
 import apiRouter from "./routes";
+import swaggerSpec from "./swagger";
 
 dotenv.config();
 const app = express();
@@ -12,6 +14,9 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+// Swagger Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API Routes - All routes prefixed with /api
 app.use("/api", apiRouter);
@@ -24,7 +29,7 @@ app.get("/", (req, res) => {
     endpoints: {
       api: "/api",
       health: "/api/health",
-      docs: "/api",
+      docs: "/api-docs",
     },
   });
 });

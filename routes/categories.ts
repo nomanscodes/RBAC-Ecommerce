@@ -17,16 +17,91 @@ const router = Router();
 // ============================================
 
 /**
- * @route   GET /api/categories
- * @desc    Get all categories with pagination
- * @access  Public
+ * @swagger
+ * /api/categories:
+ *   get:
+ *     summary: Get all categories with pagination
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: perPage
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           maximum: 100
+ *           default: 10
+ *         description: Items per page
+ *     responses:
+ *       200:
+ *         description: Categories retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Category'
+ *                 pagination:
+ *                   $ref: '#/components/schemas/Pagination'
+ *       400:
+ *         description: Invalid pagination parameters
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get("/", getAllCategories);
 
 /**
- * @route   GET /api/categories/:id
- * @desc    Get single category by ID
- * @access  Public
+ * @swagger
+ * /api/categories/{id}:
+ *   get:
+ *     summary: Get single category by ID
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Category ID
+ *     responses:
+ *       200:
+ *         description: Category retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Category'
+ *       400:
+ *         description: Invalid category ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Category not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get("/:id", getCategory);
 
