@@ -4,6 +4,8 @@ import Role from "./role";
 import Permission from "./permission";
 import UserRole from "./userRole";
 import RolePermission from "./rolePermission";
+import Product from "./product";
+import Category from "./category";
 
 // Define associations
 // User <-> Role (Many-to-Many through UserRole)
@@ -47,8 +49,19 @@ RolePermission.belongsTo(Permission, {
   as: "permission",
 });
 
+// Product <-> Category (Many-to-One)
+Product.belongsTo(Category, {
+  foreignKey: "categoryId",
+  as: "category",
+});
+
+Category.hasMany(Product, {
+  foreignKey: "categoryId",
+  as: "products",
+});
+
 // Export all models
-export { User, Role, Permission, UserRole, RolePermission };
+export { User, Role, Permission, UserRole, RolePermission, Product, Category };
 
 export default {
   User,
@@ -56,4 +69,6 @@ export default {
   Permission,
   UserRole,
   RolePermission,
+  Product,
+  Category,
 };
