@@ -7,6 +7,7 @@
 import { Router } from "express";
 import authRouter from "./auth";
 import productsRouter from "./products";
+import categoriesRouter from "./categories";
 import testRouter from "./test";
 import usersRouter from "./users";
 import { authMiddleware } from "../middleware/authMiddleware";
@@ -28,6 +29,12 @@ router.use("/auth", authRouter);
  * /api/products/*
  */
 router.use("/products", productsRouter);
+
+/**
+ * Category routes (mixed public/private)
+ * /api/categories/*
+ */
+router.use("/categories", categoriesRouter);
 
 /**
  * User management routes (protected)
@@ -64,6 +71,7 @@ router.get("/", (req, res) => {
     endpoints: {
       auth: "/api/auth",
       products: "/api/products",
+      categories: "/api/categories",
       users: "/api/users",
       health: "/api/health",
     },
