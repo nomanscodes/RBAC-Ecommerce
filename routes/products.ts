@@ -2,7 +2,13 @@ import { Router, Request, Response } from "express";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { checkPermission } from "../middleware/permissionMiddleware";
 import { MODULES, ACTIONS } from "../types/constants";
-import { createProduct } from "../controllers/productsController";
+import {
+  createProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct,
+  getAllProducts,
+} from "../controllers/productsController";
 // import * as productController from "../controllers/productController";
 
 const router = Router();
@@ -16,21 +22,14 @@ const router = Router();
  * @desc    Get all products (public - anyone can browse)
  * @access  Public
  */
-router.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Public: Get all products" });
-  // productController.getAllProducts(req, res);
-});
+router.get("/", getAllProducts);
 
 /**
  * @route   GET /api/products/:id
  * @desc    Get single product by ID
  * @access  Public
  */
-
-router.get("/:id", (req: Request, res: Response) => {
-  res.json({ message: `Public: Get product ${req.params.id}` });
-  // productController.getProductById(req, res);
-});
+router.get("/:id", getProduct);
 
 // ============================================
 // PROTECTED ROUTES (Authentication required)
@@ -53,14 +52,12 @@ router.post(
  * @desc    Update product
  * @access  Private (requires products:update permission)
  */
+
 router.put(
   "/:id",
   authMiddleware,
   checkPermission(MODULES.PRODUCTS, ACTIONS.UPDATE),
-  (req: Request, res: Response) => {
-    res.json({ message: `Update product ${req.params.id}` });
-    // productController.updateProduct(req, res);
-  },
+  updateProduct,
 );
 
 /**
@@ -72,35 +69,7 @@ router.delete(
   "/:id",
   authMiddleware,
   checkPermission(MODULES.PRODUCTS, ACTIONS.DELETE),
-  (req: Request, res: Response) => {
-    res.json({ message: `Delete product ${req.params.id}` });
-    // productController.deleteProduct(req, res);
-  },
+  deleteProduct,
 );
-
-/**
- * @route   PATCH /api/products/:id/status
- * @desc    Update product status (publish/unpublish)
- * @access  Private (requires products:update permission)
- */
-router.patch(
-  "/:id/status",
-  authMiddleware,
-  checkPermission(MODULES.PRODUCTS, ACTIONS.UPDATE),
-  (req: Request, res: Response) => {
-    res.json({ message: `Update product ${req.params.id} status` });
-    // productController.updateProductStatus(req, res);
-  },
-);
-
-/**
- * @route   GET /api/products/my/inventory
- * @desc    Get current user's products (sellers only)
- * @access  Private (requires authentication only)
- */
-router.get("/my/inventory", authMiddleware, (req: Request, res: Response) => {
-  res.json({ message: "Get my products", userId: req.user?.id });
-  // productController.getMyProducts(req, res);
-});
 
 export default router;

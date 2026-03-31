@@ -5,7 +5,7 @@ export interface ProductAttributes {
   name: string;
   price: number;
   image?: string;
-  categoryId: number;
+  categoryId: number | null;
   createdAt?: Date;
 }
 

@@ -10,7 +10,7 @@ class Product
   public name!: string;
   public price!: number;
   public image?: string;
-  public categoryId!: number;
+  public categoryId!: number | null;
   public readonly createdAt!: Date;
 }
 
@@ -35,7 +35,7 @@ Product.init(
     },
     categoryId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       field: "category_id",
       references: {
         model: "categories",
